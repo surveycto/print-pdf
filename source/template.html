@@ -1,0 +1,63 @@
+<div class="label default-question-text-size" dir="auto">{{{LABEL}}}</div>
+
+<!-- If there is an image specified in the media:image column, show it here -->
+{{#MEDIAIMAGE}}
+    <img src="{{MEDIAIMAGE}}" />
+{{/MEDIAIMAGE}}
+
+<!-- If there is audio specified in the media:audio column, show it here -->
+{{#MEDIAAUDIO}}
+    <audio controls controlsList="nodownload">
+        <source src="{{MEDIAAUDIO}}">
+        Your browser does not support the audio element.
+    </audio>
+{{/MEDIAAUDIO}}
+
+<!-- If there is a video specified in the media:video column, show it here -->
+{{#MEDIAVIDEO}}
+    <video width="100%" height="*" controls controlsList="nodownload">
+        <source src="{{MEDIAVIDEO}}">
+        Your browser does not support the video tag.
+    </video>
+{{/MEDIAVIDEO}}
+
+<div class="hint default-hint-text-size" dir="auto">{{{HINT}}}</div>
+
+<div class="container">
+    <div class="button-group">
+        <div class="tooltip">
+            <button id="preview" class="btn preview-btn">Preview PDF</button>
+            <span class="tooltiptext">Preview the PDF before downloading</span>
+        </div>
+        
+        <div class="tooltip">
+            <button id="create" class="btn create-btn">Download PDF</button>
+            <span class="tooltiptext">Generate and download the PDF</span>
+        </div>
+    </div>
+    
+    <div id="loading">
+        <div class="spinner"></div>
+        <span>Processing PDF...</span>
+    </div>
+    
+    <div id="result"></div>
+    <div id="error"></div>
+</div>
+
+<!-- Preview Modal -->
+<div id="preview-modal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <span class="close-modal">&times;</span>
+            <h2>PDF Preview</h2>
+        </div>
+        <div class="modal-body">
+            <div id="preview-container"></div>
+        </div>
+        <div class="modal-footer">
+            <button id="download-from-preview" class="btn create-btn">Download</button>
+            <button id="close-preview" class="btn cancel-btn">Close</button>
+        </div>
+    </div>
+</div>
