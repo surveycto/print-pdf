@@ -23,7 +23,7 @@ This field plug-in allows users to generate and download PDF documents from Surv
 
 **To use this plug-in as-is**
 
-1. Download the [sample form](https://github.com/surveycto/print-pdf/raw/main/extras/sample-form/Sample%20form%20-%20Print%20PDF%20field%20plug-in.xlsx) from this repo and upload it to your SurveyCTO server.
+1. Download the [sample form](https://github.com/surveycto/print-pdf/raw/refs/heads/main/extras/sample-form/Print%20PDF%20Sample%20Form.xlsx) from this repo and upload it to your SurveyCTO server.
 2. Download the [print-pdf.fieldplugin.zip](https://github.com/surveycto/print-pdf/raw/main/print-pdf.fieldplugin.zip) file from this repo, and attach it to the sample form on your SurveyCTO server.
 
 ### Parameters
@@ -95,7 +95,7 @@ For best results when formatting your HTML content for PDF conversion:
 ## More resources
 
 * **Sample form**  
-  [Download sample form](https://github.com/surveycto/print-pdf/raw/master/extras/sample-form/Sample%20form%20-%20Print%20PDF%20field%20plug-in.xlsx)
+  [Download sample form](https://github.com/surveycto/print-pdf/raw/refs/heads/main/extras/sample-form/Print%20PDF%20Sample%20Form.xlsx)
 
 * **Developer documentation**  
   Instructions and resources for developing your own field plug-ins.  
