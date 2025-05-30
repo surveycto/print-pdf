@@ -6,7 +6,7 @@
 
 This field plug-in allows users to generate and download PDF documents from SurveyCTO form content. The plug-in provides a user-friendly interface with options to preview the PDF before downloading, making it perfect for creating printable reports, certificates, or form submissions directly from your SurveyCTO forms.
 
-[![Download now](extras/download-button.png)](https://github.com/surveycto/print-pdf/raw/master/print-pdf.fieldplugin.zip)
+[![Download now](extras/download-button.png)](https://github.com/surveycto/print-pdf/raw/main/print-pdf.fieldplugin.zip)
 
 ### Features
 
@@ -23,8 +23,8 @@ This field plug-in allows users to generate and download PDF documents from Surv
 
 **To use this plug-in as-is**
 
-1. Download the [sample form](https://github.com/surveycto/print-pdf/raw/master/extras/sample-form/Sample%20form%20-%20Print%20PDF%20field%20plug-in.xlsx) from this repo and upload it to your SurveyCTO server.
-2. Download the [print-pdf.fieldplugin.zip](https://github.com/surveycto/print-pdf/raw/master/print-pdf.fieldplugin.zip) file from this repo, and attach it to the sample form on your SurveyCTO server.
+1. Download the [sample form](https://github.com/surveycto/print-pdf/raw/main/extras/sample-form/Sample%20form%20-%20Print%20PDF%20field%20plug-in.xlsx) from this repo and upload it to your SurveyCTO server.
+2. Download the [print-pdf.fieldplugin.zip](https://github.com/surveycto/print-pdf/raw/main/print-pdf.fieldplugin.zip) file from this repo, and attach it to the sample form on your SurveyCTO server.
 
 ### Parameters
 
@@ -56,6 +56,28 @@ For best results when formatting your HTML content for PDF conversion:
 3. Avoid fixed-width containers that might exceed page width
 4. Use inline CSS for styling rather than external stylesheets
 5. Keep image sizes reasonable to ensure they fit within page dimensions
+6. **Control page breaks** using CSS properties:
+   - Force a new page: `<section style="page-break-before: always; break-before: page;">`
+   - Prevent page breaks within content: `<div style="page-break-inside: avoid; break-inside: avoid;">`
+   - Avoid page breaks after headings: `<h4 style="page-break-after: avoid; break-after: avoid;">`
+
+#### Page Break Examples
+
+```html
+<!-- Start this section on a new page -->
+<section style="page-break-before: always; break-before: page;">
+    <h4>Training Modules Completed</h4>
+    <!-- Section content -->
+</section>
+
+<!-- Keep this content together on the same page -->
+<div style="page-break-inside: avoid; break-inside: avoid;">
+    <h4>Important Information</h4>
+    <p>This content will not be split across pages</p>
+</div>
+```
+
+**Note**: The plugin uses both modern (`break-before`, `break-inside`) and legacy (`page-break-before`, `page-break-inside`) CSS properties for maximum browser compatibility.
 
 ### Default SurveyCTO feature support
 
