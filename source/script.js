@@ -35,82 +35,83 @@ function prepareContentForPDF(htmlContent) {
     var mainContainer = wrapper.querySelector('div[style*="box-shadow"]') || wrapper.firstElementChild;
     
     if (mainContainer) {
-        // Update the container's style to ensure proper padding
+        // Remove background from main container to prevent page spanning
         var currentStyle = mainContainer.getAttribute('style') || '';
         
-        // Replace the border with a background shade instead
+        // Remove border, box-shadow, and background from main container
         currentStyle = currentStyle
             .replace(/border:[^;]+;/g, '')
-            .replace(/box-shadow:[^;]+;/g, '');
+            .replace(/box-shadow:[^;]+;/g, '')
+            .replace(/background-color:[^;]+;/g, '');
             
-        // Ensure adequate padding
+        // Keep padding and margin
         if (!currentStyle.includes('padding')) {
-            currentStyle += 'padding: 20px;';
+            currentStyle += 'padding: 0;';
         }
-        
-        // Add margin to prevent content from touching edges
-        if (!currentStyle.includes('margin')) {
-            currentStyle += 'margin: 0;';
-        }
-        
-        // Add a light background color
-        currentStyle += 'background-color: #f9f9f9;';
         
         mainContainer.setAttribute('style', currentStyle);
-        
-        // Add a container class for styling
         mainContainer.classList.add('pdf-content-container');
     }
     
-    // Find all sections and ensure they have proper spacing
+    // Apply background to individual sections instead
     var sections = wrapper.querySelectorAll('section');
     sections.forEach(function(section, index) {
-        // Add margin between sections
+        // Add background and styling to each section individually
+        section.style.backgroundColor = '#f9f9f9';
+        section.style.border = '1px solid #ddd';
+        section.style.padding = '20px';
         section.style.marginBottom = '25px';
+        section.style.borderRadius = '4px';
         
-        // Add a thin bottom border instead of using a box
+        // Ensure sections don't break across pages
+        section.style.pageBreakInside = 'avoid';
+        section.style.breakInside = 'avoid';
+        
+        // Add spacing between sections
         if (index < sections.length - 1) {
-            section.style.borderBottom = '1px solid #eaeaea';
-            section.style.paddingBottom = '15px';
-        }
-        
-        // Remove any page break properties from the last section
-        if (index === sections.length - 1) {
-            section.style.pageBreakAfter = 'avoid';
-            section.style.breakAfter = 'avoid';
+            section.style.marginBottom = '30px';
         }
     });
     
-    // Add CSS to control page breaks and spacing
+    // Add CSS for page-specific styling
     var style = document.createElement('style');
     style.textContent = `
+        @page {
+            margin: ${marginstb}mm ${marginslr}mm;
+            background-color: white;
+        }
+        
         .pdf-content-container {
-            border: 1px solid #ddd;
-            background-color: #fff;
-            padding: 20px;
-            page-break-after: avoid;
-            break-after: avoid;
+            padding: 0;
+            margin: 0;
+        }
+        
+        section {
+            background-color: #f9f9f9 !important;
+            border: 1px solid #ddd !important;
+            padding: 20px !important;
+            margin-bottom: 25px !important;
+            border-radius: 4px;
+            page-break-inside: avoid;
+            break-inside: avoid;
+            display: block;
+        }
+        
+        section:last-child {
+            margin-bottom: 0 !important;
         }
         
         h4 {
-            margin-top: 15px;
+            margin-top: 0;
             margin-bottom: 15px;
             page-break-after: avoid;
             break-after: avoid;
         }
         
-        section {
-            page-break-inside: auto;
-            break-inside: auto;
-        }
-        
+        /* Ensure content within sections doesn't break awkwardly */
         section > div {
             page-break-inside: avoid;
             break-inside: avoid;
-        }
-        
-        @page {
-            margin-bottom: 0;
         }
     `;
     
