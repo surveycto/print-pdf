@@ -220,3 +220,27 @@
     height: auto !important;
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
+
+/* WebView compatibility */
+.modal {
+    /* Ensure modal works in WebView */
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+}
+
+#preview-container {
+    /* Better WebView rendering */
+    -webkit-overflow-scrolling: touch;
+    position: relative;
+}
+
+/* HTML preview specific styles */
+.html-preview {
+    font-size: 12px;
+    line-height: 1.4;
+}
+
+.html-preview section {
+    margin-bottom: 15px !important;
+    page-break-inside: avoid;
+}

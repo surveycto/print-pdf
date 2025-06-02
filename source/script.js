@@ -25,6 +25,11 @@ if (!filename.toLowerCase().endsWith('.pdf')) {
     filename += '.pdf';
 }
 
+// Detect if we're in a WebView environment
+var isWebView = window.navigator.userAgent.includes('WebView') || 
+                window.navigator.userAgent.includes('wv') ||
+                (window.outerWidth === 0 && window.outerHeight === 0);
+
 // Function to prepare content for PDF generation
 function prepareContentForPDF(htmlContent) {
     // Create a wrapper div
@@ -188,7 +193,16 @@ function generatePDF(isDownload) {
         .from(preparedContent)
         .save()
         .then(function() {
-          resultContainer.textContent = 'PDF downloaded successfully!';
+          var platform = '';
+          if (document.body.className.indexOf('android-collect') >= 0) {
+            platform = ' Check your Downloads folder or device storage.';
+          } else if (document.body.className.indexOf('ios-collect') >= 0) {
+            platform = ' Check the Files app on your device.';
+          } else if (document.body.className.indexOf('web-collect') >= 0) {
+            platform = ' Check your browser\'s download location.';
+          }
+          
+          resultContainer.textContent = 'PDF downloaded successfully!' + platform;
           loadingIndicator.style.display = 'none';
           createButton.disabled = false;
           previewButton.disabled = false;
@@ -198,30 +212,83 @@ function generatePDF(isDownload) {
       // Clear previous preview
       previewContainer.innerHTML = '';
       
-      // Generate preview
-      html2pdf().set(opt)
-        .from(preparedContent)
-        .outputPdf('datauristring')
-        .then(function(pdfDataUri) {
-          // Create an iframe to display the PDF
-          var iframe = document.createElement('iframe');
-          iframe.style.width = '100%';
-          iframe.style.height = '500px';
-          iframe.style.border = 'none';
-          iframe.src = pdfDataUri;
-          
-          previewContainer.appendChild(iframe);
-          previewModal.style.display = 'block';
-          
-          loadingIndicator.style.display = 'none';
-          createButton.disabled = false;
-          previewButton.disabled = false;
-        })
-        .catch(handleError);
+      // For WebView environments, show HTML preview instead of PDF
+      if (isWebView) {
+        showHTMLPreview(preparedContent);
+      } else {
+        // Generate PDF preview for regular browsers
+        html2pdf().set(opt)
+          .from(preparedContent)
+          .outputPdf('datauristring')
+          .then(function(pdfDataUri) {
+            showPDFPreview(pdfDataUri);
+          })
+          .catch(function(error) {
+            // Fallback to HTML preview if PDF preview fails
+            console.warn('PDF preview failed, falling back to HTML:', error);
+            showHTMLPreview(preparedContent);
+          });
+      }
     }
   } catch (error) {
     handleError(error);
   }
+}
+
+// Function to show HTML preview (WebView-friendly)
+function showHTMLPreview(preparedContent) {
+  var previewDiv = document.createElement('div');
+  previewDiv.style.cssText = `
+    width: 100%;
+    max-height: 500px;
+    overflow-y: auto;
+    border: 1px solid #ddd;
+    padding: 20px;
+    background-color: white;
+    font-family: Arial, sans-serif;
+  `;
+  
+  // Clone the content and apply preview-specific styles
+  var contentClone = preparedContent.cloneNode(true);
+  
+  // Add a header to indicate this is HTML preview
+  var header = document.createElement('div');
+  header.style.cssText = `
+    background-color: #f0f0f0;
+    padding: 10px;
+    margin-bottom: 15px;
+    border-radius: 4px;
+    font-size: 14px;
+    color: #666;
+    text-align: center;
+  `;
+  header.textContent = 'HTML Preview (PDF will be formatted differently)';
+  
+  previewDiv.appendChild(header);
+  previewDiv.appendChild(contentClone);
+  previewContainer.appendChild(previewDiv);
+  
+  previewModal.style.display = 'block';
+  
+  loadingIndicator.style.display = 'none';
+  createButton.disabled = false;
+  previewButton.disabled = false;
+}
+
+// Function to show PDF preview (regular browsers)
+function showPDFPreview(pdfDataUri) {
+  var iframe = document.createElement('iframe');
+  iframe.style.width = '100%';
+  iframe.style.height = '500px';
+  iframe.style.border = 'none';
+  iframe.src = pdfDataUri;
+  
+  previewContainer.appendChild(iframe);
+  previewModal.style.display = 'block';
+  
+  loadingIndicator.style.display = 'none';
+  createButton.disabled = false;
+  previewButton.disabled = false;
 }
 
 // Function to close preview modal
