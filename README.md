@@ -51,6 +51,8 @@ Where `${report_content}` is a field reference containing the HTML content to be
 
 For best results when formatting your HTML content for PDF conversion:
 
+> **Tip:** If you're struggling to create the HTML, consider using a large language model (like ChatGPT, Claude, or Gemini) to help generate the HTML structure and styling you need.
+
 1. Use section elements (`<section>`) to organize content into logical groups
 2. Use headings (`<h1>`, `<h2>`, etc.) to structure your document
 3. Avoid fixed-width containers that might exceed page width

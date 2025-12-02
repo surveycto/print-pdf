@@ -1,7 +1,7 @@
 {
 	"name" : "Print PDF",
 	"author" : "Dobility",
-	"version": "1.0.3",
+	"version": "1.0.4",
 	"supportedFieldTypes": ["text"],
 	"externalJs": ["html2pdf.bundle.min.js"]
 }
