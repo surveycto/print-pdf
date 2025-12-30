@@ -1,63 +1,63 @@
-<div class="label default-question-text-size" dir="auto">{{{LABEL}}}</div>
+<div id="pdf-plugin-root">
+    <div class="label default-question-text-size" dir="auto">{{{LABEL}}}</div>
 
-<!-- If there is an image specified in the media:image column, show it here -->
-{{#MEDIAIMAGE}}
-    <img src="{{MEDIAIMAGE}}" />
-{{/MEDIAIMAGE}}
+    <!-- If there is an image specified in the media:image column, show it here -->
+    {{#MEDIAIMAGE}}
+        <img src="{{MEDIAIMAGE}}" alt="Media image" />
+    {{/MEDIAIMAGE}}
 
-<!-- If there is audio specified in the media:audio column, show it here -->
-{{#MEDIAAUDIO}}
-    <audio controls controlsList="nodownload">
-        <source src="{{MEDIAAUDIO}}">
-        Your browser does not support the audio element.
-    </audio>
-{{/MEDIAAUDIO}}
+    <!-- If there is audio specified in the media:audio column, show it here -->
+    {{#MEDIAAUDIO}}
+        <audio controls controlsList="nodownload">
+            <source src="{{MEDIAAUDIO}}">
+            Your browser does not support the audio element.
+        </audio>
+    {{/MEDIAAUDIO}}
 
-<!-- If there is a video specified in the media:video column, show it here -->
-{{#MEDIAVIDEO}}
-    <video width="100%" height="*" controls controlsList="nodownload">
-        <source src="{{MEDIAVIDEO}}">
-        Your browser does not support the video tag.
-    </video>
-{{/MEDIAVIDEO}}
+    <!-- If there is a video specified in the media:video column, show it here -->
+    {{#MEDIAVIDEO}}
+        <video width="100%" height="*" controls controlsList="nodownload">
+            <source src="{{MEDIAVIDEO}}">
+            Your browser does not support the video tag.
+        </video>
+    {{/MEDIAVIDEO}}
 
-<div class="hint default-hint-text-size" dir="auto">{{{HINT}}}</div>
+    <div class="hint default-hint-text-size" dir="auto">{{{HINT}}}</div>
 
-<div class="container">
-    <div class="button-group">
-        <div class="tooltip">
-            <button id="preview" class="btn preview-btn">Preview PDF</button>
-            <span class="tooltiptext">Preview the PDF before downloading</span>
+    <div class="pdf-container">
+        <div class="pdf-button-group">
+            <button id="preview" type="button" class="pdf-btn pdf-preview-btn" title="Preview the PDF before downloading">
+                Preview PDF
+            </button>
+            
+            <button id="create" type="button" class="pdf-btn pdf-create-btn" title="Generate and download the PDF">
+                Download PDF
+            </button>
         </div>
         
-        <div class="tooltip">
-            <button id="create" class="btn create-btn">Download PDF</button>
-            <span class="tooltiptext">Generate and download the PDF</span>
+        <div id="loading" class="pdf-loading" aria-live="polite">
+            <div class="pdf-spinner" aria-hidden="true"></div>
+            <span>Processing PDF...</span>
         </div>
+        
+        <div id="result" class="pdf-result" aria-live="polite"></div>
+        <div id="error" class="pdf-error" role="alert" aria-live="assertive"></div>
     </div>
-    
-    <div id="loading">
-        <div class="spinner"></div>
-        <span>Processing PDF...</span>
-    </div>
-    
-    <div id="result"></div>
-    <div id="error"></div>
-</div>
 
-<!-- Preview Modal -->
-<div id="preview-modal" class="modal">
-    <div class="modal-content">
-        <div class="modal-header">
-            <span class="close-modal">&times;</span>
-            <h2>PDF Preview</h2>
-        </div>
-        <div class="modal-body">
-            <div id="preview-container"></div>
-        </div>
-        <div class="modal-footer">
-            <button id="download-from-preview" class="btn create-btn">Download</button>
-            <button id="close-preview" class="btn cancel-btn">Close</button>
+    <!-- Preview Modal -->
+    <div id="preview-modal" class="pdf-modal" role="dialog" aria-modal="true" aria-labelledby="pdf-preview-title">
+        <div class="pdf-modal-content">
+            <div class="pdf-modal-header">
+                <h2 id="pdf-preview-title">PDF Preview</h2>
+                <button type="button" class="close-modal" aria-label="Close preview">&times;</button>
+            </div>
+            <div class="pdf-modal-body">
+                <div id="preview-container"></div>
+            </div>
+            <div class="pdf-modal-footer">
+                <button id="download-from-preview" type="button" class="pdf-btn pdf-create-btn">Download</button>
+                <button id="close-preview" type="button" class="pdf-btn pdf-cancel-btn">Close</button>
+            </div>
         </div>
     </div>
 </div>
